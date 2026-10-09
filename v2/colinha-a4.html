@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Colinha do Palco — Comunicação e Posicionamento</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  /* Mesmo sistema visual da folha de campo: A4, P&B, só contornos */
+  @page { size: A4; margin: 0; }
+  :root { --ink: #000; --mid: #555; --soft: #999; --line: #bbb; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #fff; color: var(--ink); }
+  body { font-family: "Inter Tight", Arial, sans-serif; font-size: 8.4pt; line-height: 1.25; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; height: 297mm; padding: 8mm 11mm 6mm; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+  @media screen { body { background: #e5e5e5; } .page { margin: 10mm auto; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.15); } }
+
+  .mono { font-family: "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+  .serif { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-weight: 400; }
+  h1 { font-size: 23pt; font-weight: 800; letter-spacing: -.035em; line-height: .92; }
+
+  .top { display: grid; grid-template-columns: 1fr 58mm 52mm; gap: 5mm; align-items: start; padding-bottom: 2.6mm; border-bottom: 1.5pt solid var(--ink); }
+  .panel { border: .8pt solid var(--ink); border-radius: 2.4mm; padding: 2mm 2.6mm; font-size: 7pt; }
+  .panel h3 { font-size: 6.2pt; font-weight: 600; margin-bottom: 1.2mm; }
+  .panel ul { list-style: none; display: flex; flex-direction: column; gap: .9mm; }
+  .panel li::before { content: ""; display: inline-block; width: 2.4mm; height: 2.4mm; border: .7pt solid var(--ink); border-radius: .5mm; margin-right: 1.4mm; vertical-align: -.4mm; }
+  .keys li::before { display: none; }
+  kbd { font-family: "JetBrains Mono", monospace; font-size: 6.4pt; border: .7pt solid var(--ink); border-radius: .8mm; padding: 0 1mm; }
+  .warn { font-weight: 700; }
+
+  /* Roteiro */
+  .run { margin-top: 2mm; }
+  .colhead, .r { display: grid; grid-template-columns: 11mm 7mm 40mm 1fr 41mm; gap: 2.4mm; align-items: center; }
+  .colhead { font-size: 5.8pt; font-weight: 600; color: var(--mid); padding-bottom: .8mm; border-bottom: .6pt solid var(--ink); }
+  .r { height: 5.85mm; border-bottom: .5pt dotted var(--soft); }
+  .t { font-family: "JetBrains Mono", monospace; font-size: 7.4pt; font-weight: 700; }
+  .n { font-family: "JetBrains Mono", monospace; font-size: 6.8pt; color: var(--mid); }
+  .s { font-weight: 700; font-size: 8.2pt; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .say { font-size: 8.2pt; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .act { font-family: "JetBrains Mono", monospace; font-size: 6.3pt; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .act b { border: .8pt solid var(--ink); border-radius: .8mm; padding: .2mm 1mm; font-weight: 700; }
+
+  /* Exercício ao vivo: linha com contorno forte */
+  .r.ex { border: 1pt solid var(--ink); border-radius: 1.6mm; height: 6.6mm; margin: .5mm -1.4mm; padding: 0 1.4mm; border-bottom-width: 1pt; border-bottom-style: solid; }
+  .r.gpt .s::after { content: " · GPT"; font-family: "JetBrains Mono", monospace; font-size: 5.8pt; font-weight: 600; letter-spacing: .1em; }
+  .r.div { height: 5.3mm; }
+  .r.div .s { font-weight: 500; font-family: "JetBrains Mono", monospace; font-size: 6.4pt; letter-spacing: .14em; text-transform: uppercase; }
+
+  .bh { display: flex; align-items: baseline; gap: 2.4mm; margin-top: 1.6mm; padding-bottom: .4mm; }
+  .bnum { font-size: 14pt; font-weight: 800; line-height: .8; letter-spacing: -.04em; -webkit-text-stroke: .7pt var(--ink); color: #fff; }
+  .bname { font-size: 6.4pt; font-weight: 600; }
+  .bmeta { margin-left: auto; font-size: 6.2pt; color: var(--mid); }
+
+  .bottom { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; padding-top: 2.4mm; }
+  .bottom .panel { font-size: 7.2pt; }
+  .bottom .panel p + p { margin-top: .8mm; }
+  .foot { margin-top: 2mm; display: flex; justify-content: space-between; font-size: 6pt; color: var(--mid); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- CABEÇALHO -->
+  <div class="top">
+    <div>
+      <div class="mono" style="font-size:6.4pt; font-weight:600;">Só pra você · não distribuir</div>
+      <h1 style="margin-top:1.6mm;">Colinha<br>do palco<span class="serif">.</span></h1>
+      <p style="margin-top:2.2mm; font-size:7.6pt; color:#333;"><b>50 min · 29 slides · 4 exercícios ao vivo.</b><br>Olhe a coluna <b>Relógio</b>: é quando cada slide deve <i>começar</i>.</p>
+    </div>
+    <div class="panel">
+      <h3 class="mono">Antes de subir</h3>
+      <ul>
+        <li>Slide 2 preenchido (seus números)</li>
+        <li>Abrir <b>v2/index.html</b> (roda sem internet)</li>
+        <li>Tela cheia: botão no canto superior</li>
+        <li>Testar o QR com o seu celular</li>
+        <li>GPT com o prompt novo</li>
+        <li>Folha de campo em cada cadeira</li>
+        <li>Relógio ou cronômetro à vista</li>
+      </ul>
+    </div>
+    <div class="panel keys">
+      <h3 class="mono">Teclas</h3>
+      <ul>
+        <li><kbd>→</kbd> <kbd>espaço</kbd> avança · <kbd>←</kbd> volta</li>
+        <li><kbd>1</kbd>–<kbd>9</kbd> pula pro slide · <kbd>0</kbd> = 10</li>
+        <li class="warn"><kbd>R</kbd> volta pro slide 1. Cuidado!</li>
+        <li><b>Timer:</b> clique inicia/pausa</li>
+        <li><b>Zerar timer:</b> botão direito</li>
+        <li><kbd>End</kbd> vai pro último slide</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ROTEIRO -->
+  <div class="run">
+    <div class="colhead mono"><span>Relógio</span><span>Nº</span><span>Slide</span><span>Frase-chave</span><span>Ação</span></div>
+
+    <div class="bh"><span class="bnum">00</span><span class="bname mono">Abertura</span><span class="bmeta mono">5 min</span></div>
+    <div class="r"><span class="t">0:00</span><span class="n">01</span><span class="s">Capa</span><span class="say">"Não é palestra de inspiração. É de execução."</span><span class="act">Sorria, respire</span></div>
+    <div class="r"><span class="t">0:30</span><span class="n">02</span><span class="s">Quem sou eu</span><span class="say">Sua prova em 1 frase + "Não anota. Faz."</span><span class="act">3 regras</span></div>
+    <div class="r"><span class="t">1:30</span><span class="n">03</span><span class="s">O caminho</span><span class="say">"4 blocos. 4 exercícios aqui, 3 em casa."</span><span class="act">Mostre a folha</span></div>
+    <div class="r"><span class="t">2:30</span><span class="n">04</span><span class="s">Abra o GPT · QR</span><span class="say">"Celular na mão. Mandem o nome da iniciativa."</span><span class="act">Espere 30s · QR</span></div>
+    <div class="r"><span class="t">4:00</span><span class="n">05</span><span class="s">Verdade dura</span><span class="say">"Sua causa não é invisível. É incompreensível."</span><span class="act">Pausa dramática</span></div>
+
+    <div class="bh"><span class="bnum">01</span><span class="bname mono">Narrativa institucional</span><span class="bmeta mono">5:00 → 13:30</span></div>
+    <div class="r div"><span class="t">5:00</span><span class="n">06</span><span class="s">Abertura do bloco</span><span class="say">"Você não vende o que faz. Vende o que muda."</span><span class="act">Lacuna 01 da folha</span></div>
+    <div class="r"><span class="t">5:30</span><span class="n">07</span><span class="s">Vende o que muda</span><span class="say">Troque "oferecemos" por "transformamos".</span><span class="act">Leia 1 par fraco→forte</span></div>
+    <div class="r"><span class="t">7:30</span><span class="n">08</span><span class="s">Vilão · Herói · Transf.</span><span class="say">"O herói é a pessoa atendida. Você é o guia."</span><span class="act">—</span></div>
+    <div class="r ex"><span class="t">9:30</span><span class="n">09</span><span class="s">EX 01 · Frase de impacto</span><span class="say">"A gente ajuda [quem] que sofre com [vilão]…"</span><span class="act"><b>▶ 3:00</b> · 1 pessoa lê</span></div>
+
+    <div class="bh"><span class="bnum">02</span><span class="bname mono">Convencer quem financia</span><span class="bmeta mono">13:30 → 25:00</span></div>
+    <div class="r div"><span class="t">13:30</span><span class="n">10</span><span class="s">Abertura do bloco</span><span class="say">"Ninguém financia por dó. Financia por estratégia."</span><span class="act">Lacuna 02</span></div>
+    <div class="r"><span class="t">14:00</span><span class="n">11</span><span class="s">Empresa quer 3 coisas</span><span class="say">R$ 50 mil = 200 famílias + 4 reportagens + 12h</span><span class="act">—</span></div>
+    <div class="r"><span class="t">15:30</span><span class="n">12</span><span class="s">Cada financiador…</span><span class="say">"A história é a mesma. Muda o que o outro ganha."</span><span class="act">Empresa · invest. · edital</span></div>
+    <div class="r"><span class="t">16:30</span><span class="n">13</span><span class="s">Pitch de 30s</span><span class="say">Problema → solução + prova → pedido &amp; troca.</span><span class="act">"Exemplo ilustrativo"</span></div>
+    <div class="r ex"><span class="t">18:00</span><span class="n">14</span><span class="s">EX 02 · Pitch de 30s</span><span class="say">"Passou de 35s, está longo. Faltou número, fraco."</span><span class="act"><b>▶ 5:00</b> · duplas · 3 vol.</span></div>
+    <div class="r gpt"><span class="t">24:00</span><span class="n">15</span><span class="s">EX 03 · Tabela</span><span class="say">"Nenhuma linha pode ser logo no banner."</span><span class="act">"Digite exercício 3"</span></div>
+
+    <div class="bh"><span class="bnum">03</span><span class="bname mono">Visibilidade do impacto</span><span class="bmeta mono">25:00 → 36:00</span></div>
+    <div class="r div"><span class="t">25:00</span><span class="n">16</span><span class="s">Abertura do bloco</span><span class="say">"Se ninguém vê, é como se não existisse."</span><span class="act">—</span></div>
+    <div class="r"><span class="t">25:30</span><span class="n">17</span><span class="s">Documente &gt; crie</span><span class="say">"O celular sai do bolso antes do crachá."</span><span class="act">Lacuna 03</span></div>
+    <div class="r"><span class="t">27:00</span><span class="n">18</span><span class="s">Macro + micro</span><span class="say">"Um número grande e um nome próprio."</span><span class="act">"Dados ilustrativos"</span></div>
+    <div class="r"><span class="t">28:30</span><span class="n">19</span><span class="s">Documentar ≠ expor</span><span class="say">"A história é dela. Você só pede emprestada."</span><span class="act">ECA · LGPD</span></div>
+    <div class="r ex"><span class="t">30:00</span><span class="n">20</span><span class="s">EX 04 · Banco de provas</span><span class="say">3 números + 3 histórias + 3 "eu era X, hoje Y"</span><span class="act"><b>▶ 4:00</b> · 1 história</span></div>
+    <div class="r gpt"><span class="t">35:00</span><span class="n">21</span><span class="s">EX 05 · Calendário</span><span class="say">Seg. número · qua. rosto · sex. bastidor.</span><span class="act">"Digite exercício 5"</span></div>
+
+    <div class="bh"><span class="bnum">04</span><span class="bname mono">Autoridade e reconhecimento</span><span class="bmeta mono">36:00 → 45:00</span></div>
+    <div class="r div"><span class="t">36:00</span><span class="n">22</span><span class="s">Abertura do bloco</span><span class="say">"Pare de pedir atenção. Comece a receber."</span><span class="act">—</span></div>
+    <div class="r"><span class="t">36:30</span><span class="n">23</span><span class="s">Uma palavra</span><span class="say">Havaianas = verão. "Causa não é palavra."</span><span class="act">Lacuna 04</span></div>
+    <div class="r"><span class="t">38:00</span><span class="n">24</span><span class="s">Autoridade</span><span class="say">"Uma coisa, em todo formato, por 12 meses."</span><span class="act">—</span></div>
+    <div class="r ex"><span class="t">39:30</span><span class="n">25</span><span class="s">EX 06 · Sua palavra</span><span class="say">"Uma palavra. Sem 'e'. Sem 'também'. Uma."</span><span class="act"><b>▶ 4:00</b> · 2 falam</span></div>
+    <div class="r gpt"><span class="t">44:30</span><span class="n">26</span><span class="s">EX 07 · Territórios</span><span class="say">"Estreito vence largo."</span><span class="act">"Digite exercício 7"</span></div>
+
+    <div class="bh"><span class="bnum">05</span><span class="bname mono">Fechamento</span><span class="bmeta mono">45:00 → 50:00</span></div>
+    <div class="r"><span class="t">45:00</span><span class="n">27</span><span class="s">Pacto de 7 dias</span><span class="say">"Consistência vale mais que perfeição."</span><span class="act">Verso: assinem</span></div>
+    <div class="r"><span class="t">46:30</span><span class="n">28</span><span class="s">Mapa mental</span><span class="say">Fala → vende → mostra → ocupa.</span><span class="act">Nota "depois" (verso)</span></div>
+    <div class="r"><span class="t">47:30</span><span class="n">29</span><span class="s">Pare de explicar…</span><span class="say">"…comece a contar o que muda." @DanielLuzz</span><span class="act">QR · cartão · perguntas</span></div>
+  </div>
+
+  <!-- RODAPÉ: PLANO B + LEMBRETES -->
+  <div class="bottom">
+    <div class="panel">
+      <h3 class="mono">Atrasou? Plano B</h3>
+      <p><b>Passou de 26:00 no slide 16:</b> pule o 17 e diga a frase dele no 16.</p>
+      <p><b>Passou de 38:00 no slide 23:</b> pule o 24 e o 26.</p>
+      <p><b>Nunca corte:</b> EX 06 e o slide 29. É o que eles levam pra casa.</p>
+    </div>
+    <div class="panel">
+      <h3 class="mono">Nos exercícios</h3>
+      <p>Clique no timer <b>antes</b> de explicar e circule pela sala.</p>
+      <p>Feedback ao vivo: <b>1 elogio concreto + 1 corte</b>. Máx. 1 min por pessoa.</p>
+      <p>Sem voluntário? Leia o exemplo do slide e peça "quem melhora isso?".</p>
+    </div>
+  </div>
+
+  <div class="foot mono"><span>Daniel Luzz · Comunicação e Posicionamento</span><span>Rede Muda Mundo · Imersão Inovação Social</span></div>
+</div>
+</body>
+</html>
