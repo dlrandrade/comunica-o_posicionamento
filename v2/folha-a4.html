@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Folha de Campo — Comunicação e Posicionamento</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  /* A4, preto e branco, pouca tinta: só contornos e linhas finas */
+  @page { size: A4; margin: 0; }
+  :root { --ink: #000; --mid: #555; --soft: #999; --line: #bbb; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #fff; color: var(--ink); }
+  body { font-family: "Inter Tight", Arial, sans-serif; font-size: 9.5pt; line-height: 1.3; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; height: 297mm; padding: 10mm 12mm 8mm; position: relative; overflow: hidden; page-break-after: always; display: flex; flex-direction: column; }
+  .page:last-child { page-break-after: auto; }
+  @media screen { body { background: #e5e5e5; } .page { margin: 10mm auto; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.15); } }
+
+  .mono { font-family: "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+  .serif { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-weight: 400; }
+  h1 { font-size: 25pt; font-weight: 800; letter-spacing: -.035em; line-height: .92; }
+  h2 { font-size: 12.5pt; font-weight: 800; letter-spacing: -.02em; line-height: 1.05; }
+
+  /* Cabeçalho */
+  .top { display: flex; justify-content: space-between; align-items: flex-end; gap: 8mm; padding-bottom: 3mm; border-bottom: 1.5pt solid var(--ink); }
+  .top .meta { font-size: 6.8pt; color: var(--mid); }
+  .tag { display: inline-block; border: .8pt solid var(--ink); border-radius: 99px; padding: .6mm 2.4mm; font-size: 6.5pt; font-weight: 600; }
+  .field { display: flex; align-items: flex-end; gap: 2mm; }
+  .field .lbl { font-size: 6.8pt; white-space: nowrap; }
+  .field .ln { flex: 1; border-bottom: .6pt solid var(--ink); height: 6.5mm; }
+
+  /* Termômetro 0–10 */
+  .thermo { display: flex; align-items: center; gap: 1.4mm; }
+  .thermo .q { font-size: 7.5pt; font-weight: 600; margin-right: 1.5mm; }
+  .thermo span { width: 5.2mm; height: 5.2mm; border: .7pt solid var(--ink); border-radius: 50%; display: grid; place-items: center; font-size: 6.3pt; font-family: "JetBrains Mono", monospace; }
+
+  /* Blocos da palestra */
+  .block { margin-top: 2.4mm; padding-top: 2mm; border-top: .6pt solid var(--line); }
+  .block:first-of-type { border-top: none; }
+  .bhead { display: flex; align-items: baseline; gap: 3mm; }
+  .bnum { font-size: 19pt; font-weight: 800; line-height: .8; letter-spacing: -.04em; -webkit-text-stroke: .8pt var(--ink); color: #fff; }
+  .bname { font-size: 7pt; }
+  .cloze { margin-top: 1.2mm; font-size: 10.5pt; font-weight: 600; letter-spacing: -.01em; }
+  .gap { display: inline-block; min-width: 26mm; border-bottom: .8pt solid var(--ink); height: 4mm; vertical-align: -1mm; }
+
+  .ex { margin-top: 2mm; border: .8pt solid var(--ink); border-radius: 3mm; padding: 2.2mm 3.6mm 2.6mm; }
+  .exhead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.4mm; }
+  .exlbl { display: flex; align-items: center; gap: 2mm; }
+  .exlbl .pill { border: .8pt solid var(--ink); padding: .3mm 1.8mm; font-size: 6.6pt; font-weight: 700; border-radius: 1mm; }
+  .exlbl h2 { font-size: 11pt; }
+  .time { font-size: 6.6pt; display: flex; align-items: center; gap: 1.2mm; }
+  .time::before { content: ""; width: 3mm; height: 3mm; border: .7pt solid var(--ink); border-radius: 50%; }
+  .hint { font-size: 7.2pt; color: var(--mid); margin-top: .6mm; }
+
+  .wl { display: flex; align-items: flex-end; gap: 2mm; height: 7.6mm; border-bottom: .5pt dotted var(--soft); }
+  .wl .pre { font-weight: 700; font-size: 9pt; white-space: nowrap; padding-bottom: .8mm; }
+  .wl .pre small { display: block; font-family: "JetBrains Mono", monospace; font-size: 5.6pt; font-weight: 500; letter-spacing: .1em; color: var(--mid); text-transform: uppercase; }
+  .wl.blank { height: 7mm; }
+
+  .checks { display: flex; flex-wrap: wrap; gap: 1mm 5mm; margin-top: 2mm; font-size: 7.6pt; }
+  .checks span::before { content: ""; display: inline-block; width: 2.8mm; height: 2.8mm; border: .7pt solid var(--ink); border-radius: .6mm; margin-right: 1.4mm; vertical-align: -.5mm; }
+
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+  .grid3 .col h3 { font-size: 6.6pt; font-weight: 600; padding-bottom: .8mm; border-bottom: .8pt solid var(--ink); }
+  .grid3 .col .wl { height: 6.8mm; }
+  .grid3 .col .wl .n { font-family: "JetBrains Mono", monospace; font-size: 6.5pt; color: var(--soft); padding-bottom: .8mm; }
+
+  .letters { display: flex; gap: 1.2mm; margin-top: 1.6mm; }
+  .letters span { width: 8.4mm; height: 9mm; border: .8pt solid var(--ink); border-radius: .8mm; }
+  .letters span:nth-child(n+11) { border-style: dashed; border-color: var(--soft); }
+
+  .duo { display: flex; align-items: center; gap: 2mm; margin-top: 2mm; padding: 1.6mm 2.4mm; border: .6pt dashed var(--ink); border-radius: 2mm; font-size: 7.6pt; }
+  .duo b { font-weight: 700; }
+  .duo .sec { display: inline-block; width: 12mm; border-bottom: .7pt solid var(--ink); height: 4mm; }
+
+  .foot { margin-top: auto; padding-top: 2mm; display: flex; justify-content: space-between; font-size: 6.2pt; color: var(--mid); }
+
+  /* Verso */
+  .gpt { display: grid; grid-template-columns: 40mm 1fr; gap: 6mm; align-items: center; border: .8pt solid var(--ink); border-radius: 3mm; padding: 4mm; margin-top: 4mm; }
+  .gpt img { width: 40mm; height: 40mm; display: block; }
+  .gpt ol { list-style: none; display: flex; flex-direction: column; gap: 1.8mm; margin-top: 2.4mm; }
+  .gpt li { display: grid; grid-template-columns: 12mm 1fr; gap: 2mm; align-items: baseline; font-size: 8.6pt; }
+  .gpt li .k { font-family: "JetBrains Mono", monospace; font-size: 6.6pt; font-weight: 700; border: .7pt solid var(--ink); border-radius: 1mm; text-align: center; padding: .3mm 0; }
+  .say { font-family: "JetBrains Mono", monospace; font-size: 7.4pt; background: none; border-bottom: .6pt dotted var(--ink); }
+
+  .pact { margin-top: 4mm; }
+  .pact .row { display: grid; grid-template-columns: 5mm 16mm 1fr 12mm; gap: 2.4mm; align-items: center; height: 7.4mm; border-bottom: .5pt dotted var(--soft); font-size: 8.8pt; }
+  .pact .box { width: 4mm; height: 4mm; border: .8pt solid var(--ink); border-radius: .8mm; }
+  .pact .d { font-family: "JetBrains Mono", monospace; font-size: 6.6pt; font-weight: 600; }
+  .pact .m { font-family: "JetBrains Mono", monospace; font-size: 6.2pt; color: var(--mid); text-align: right; }
+  .sign { display: grid; grid-template-columns: 1fr 30mm; gap: 6mm; margin-top: 3.4mm; }
+
+  .cut { margin-top: 5mm; border-top: .8pt dashed var(--ink); position: relative; padding-top: 4mm; }
+  .cut .scissor { position: absolute; top: -3.2mm; left: 6mm; background: #fff; padding: 0 1.5mm; font-size: 9pt; }
+  .cut .how { position: absolute; top: -2.2mm; right: 6mm; background: #fff; padding: 0 1.5mm; font-size: 6.2pt; }
+  .card2 { display: grid; grid-template-columns: 85mm 85mm; justify-content: center; }
+  .wallet { height: 54mm; border: .8pt solid var(--ink); padding: 4mm 5mm; display: flex; flex-direction: column; }
+  .wallet:first-child { border-radius: 3mm 0 0 3mm; border-right: .6pt dashed var(--soft); }
+  .wallet:last-child { border-radius: 0 3mm 3mm 0; border-left: none; }
+  .wallet .wl { height: 7mm; }
+
+  .conn .crow { display: grid; grid-template-columns: 1fr 1.2fr .9fr 1fr; gap: 3mm; height: 8mm; border-bottom: .5pt dotted var(--soft); align-items: end; }
+  .conn .crow span + span { border-left: .5pt solid var(--line); height: 100%; }
+  .conn .crow.head { height: 5.6mm; font-size: 6.2pt; font-weight: 600; align-items: center; border-bottom: .6pt solid var(--ink); }
+  .conn .crow.head span + span { border-left: none; height: auto; }
+  .cut { margin-top: auto !important; }
+  .key { margin-top: 3mm; padding-top: 3mm; display: flex; justify-content: space-between; align-items: flex-end; }
+  .key .ans { transform: rotate(180deg); font-size: 6.4pt; color: var(--mid); text-align: right; }
+</style>
+</head>
+<body>
+
+<!-- ================= FRENTE: DURANTE A PALESTRA ================= -->
+<div class="page">
+  <div class="top">
+    <div>
+      <div class="mono" style="font-size:6.6pt; font-weight:600;">Folha de campo · Rede Muda Mundo</div>
+      <h1 style="margin-top:1.8mm;">Comunicação<br>&amp; Posicionamento<span class="serif" style="font-weight:400;">.</span></h1>
+    </div>
+    <div style="flex:1; max-width:92mm; display:flex; flex-direction:column; gap:2.4mm;">
+      <div class="field"><span class="lbl mono">Minha iniciativa</span><span class="ln"></span></div>
+      <div class="thermo">
+        <span class="q" style="width:auto; height:auto; border:none; font-family:inherit; font-size:7.4pt;">ANTES · De 0 a 10, quão fácil é entender o que a gente faz?</span>
+      </div>
+      <div class="thermo"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+    </div>
+  </div>
+
+  <!-- BLOCO 01 -->
+  <div class="block">
+    <div class="bhead"><span class="bnum">01</span><span class="bname mono">Narrativa institucional</span></div>
+    <p class="cloze">Ninguém compra o que você <span class="gap"></span>. As pessoas compram o que <span class="gap"></span> por causa de você.</p>
+    <div class="ex">
+      <div class="exhead">
+        <div class="exlbl"><span class="pill mono">EX 01</span><h2>Frase de impacto</h2></div>
+        <span class="time mono">3 min</span>
+      </div>
+      <div class="wl"><span class="pre">A gente ajuda<small>quem, exatamente</small></span></div>
+      <div class="wl"><span class="pre">que sofre com<small>o vilão concreto</small></span></div>
+      <div class="wl"><span class="pre">a se tornar<small>a transformação visível</small></span></div>
+      <div class="checks"><span>O vilão é concreto (não "desigualdade")</span><span>A vó entenderia</span><span>Cabe num respiro</span><span>Sem sigla, sem "através de"</span></div>
+    </div>
+  </div>
+
+  <!-- BLOCO 02 -->
+  <div class="block">
+    <div class="bhead"><span class="bnum">02</span><span class="bname mono">Convencer quem financia</span></div>
+    <p class="cloze">Ninguém financia por <span class="gap"></span>. Financia por <span class="gap"></span>.</p>
+    <div class="ex">
+      <div class="exhead">
+        <div class="exlbl"><span class="pill mono">EX 02</span><h2>Pitch de 30 segundos</h2></div>
+        <span class="time mono">5 min</span>
+      </div>
+      <div class="wl"><span class="pre">Problema<small>~7s · afeta quantas pessoas?</small></span></div>
+      <div class="wl"><span class="pre">Solução + prova<small>~10s · o que já entregou</small></span></div>
+      <div class="wl blank"></div>
+      <div class="wl"><span class="pre">Pedido &amp; troca<small>~13s · precisa de N, o parceiro recebe M</small></span></div>
+      <div class="duo"><b>Em dupla:</b> leia pra quem está ao lado. Ela cronometra: <span class="sec"></span> s &nbsp;·&nbsp; Passou de 35s? Corte. &nbsp;·&nbsp; Tem número? <span style="display:inline-block; width:2.8mm; height:2.8mm; border:.7pt solid #000; border-radius:.6mm; vertical-align:-.5mm;"></span></div>
+    </div>
+  </div>
+
+  <!-- BLOCO 03 -->
+  <div class="block">
+    <div class="bhead"><span class="bnum">03</span><span class="bname mono">Visibilidade do impacto</span></div>
+    <p class="cloze"><span class="gap"></span>, não crie. Mas documentar não é <span class="gap"></span>.</p>
+    <div class="ex">
+      <div class="exhead">
+        <div class="exlbl"><span class="pill mono">EX 04</span><h2>Banco de provas</h2></div>
+        <span class="time mono">4 min</span>
+      </div>
+      <div class="grid3">
+        <div class="col"><h3 class="mono">3 números fortes</h3><div class="wl"><span class="n">01</span></div><div class="wl"><span class="n">02</span></div><div class="wl"><span class="n">03</span></div></div>
+        <div class="col"><h3 class="mono">3 histórias · nome, idade, lugar</h3><div class="wl"><span class="n">01</span></div><div class="wl"><span class="n">02</span></div><div class="wl"><span class="n">03</span></div></div>
+        <div class="col"><h3 class="mono">3 falas "eu era X, hoje sou Y"</h3><div class="wl"><span class="n">01</span></div><div class="wl"><span class="n">02</span></div><div class="wl"><span class="n">03</span></div></div>
+      </div>
+      <p class="hint">Faltou número? Escreva o que você precisaria medir. Toda história só com autorização da pessoa.</p>
+    </div>
+  </div>
+
+  <!-- BLOCO 04 -->
+  <div class="block">
+    <div class="bhead"><span class="bnum">04</span><span class="bname mono">Autoridade e reconhecimento</span></div>
+    <p class="cloze">Posicionar é ocupar uma <span class="gap"></span> na cabeça da pessoa. <span class="gap" style="min-width:20mm;"></span> vence largo.</p>
+    <div class="ex">
+      <div class="exhead">
+        <div class="exlbl"><span class="pill mono">EX 06</span><h2>Categoria &amp; palavra</h2></div>
+        <span class="time mono">4 min</span>
+      </div>
+      <div class="wl"><span class="pre">Quando alguém pensa em<small>tema, região ou público</small></span></div>
+      <div class="wl"><span class="pre">precisa pensar na gente porque somos A organização que</span></div>
+      <div style="display:flex; align-items:flex-end; gap:4mm; margin-top:2.2mm;">
+        <div style="font-weight:700; font-size:9pt; padding-bottom:1mm;">Minha palavra:<br><span class="mono" style="font-size:5.8pt; font-weight:500; color:#555;">uma letra por quadrado · sem "e"</span></div>
+        <div class="letters"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot mono"><span>Daniel Luzz · @DanielLuzz</span><span>Vire a folha: o depois começa no verso →</span></div>
+</div>
+
+<!-- ================= VERSO: DEPOIS DA PALESTRA ================= -->
+<div class="page">
+  <div class="top">
+    <div>
+      <div class="mono" style="font-size:6.6pt; font-weight:600;">Verso · O que fazer quando sair daqui</div>
+      <h1 style="margin-top:1.8mm;">Agora é<br><span class="serif" style="font-size:30pt;">rotina.</span></h1>
+    </div>
+    <div style="flex:1; max-width:92mm; display:flex; flex-direction:column; gap:2.4mm;">
+      <div class="thermo"><span class="q" style="width:auto; height:auto; border:none; font-family:inherit; font-size:7.4pt;">DEPOIS · E agora, de 0 a 10?</span></div>
+      <div class="thermo"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+      <div class="field"><span class="lbl mono">O que mais mudou</span><span class="ln"></span></div>
+    </div>
+  </div>
+
+  <!-- GPT -->
+  <div class="gpt">
+    <img src="qr-gpt.svg" alt="QR Code do GPT Comunicação que Muda Mundo">
+    <div>
+      <div class="mono" style="font-size:6.6pt; font-weight:600;">GPT gratuito · Comunicação que Muda Mundo</div>
+      <h2 style="margin-top:1.2mm; font-size:14pt;">Os 3 exercícios que faltam, com nota e reescrita.</h2>
+      <ol>
+        <li><span class="k">EX 03</span><span><b>Tabela de valor.</b> 5 linhas: você entrega × quem financia recebe. Nenhuma pode ser "logo no banner". Digite <span class="say">exercício 3</span></span></li>
+        <li><span class="k">EX 05</span><span><b>Calendário 3x semana.</b> Seg. número, qua. rosto, sex. bastidor. Digite <span class="say">exercício 5</span></span></li>
+        <li><span class="k">EX 07</span><span><b>3 territórios, 90 dias.</b> Tema, região ou público + 1 ação em cada. Digite <span class="say">exercício 7</span></span></li>
+        <li><span class="k">KIT</span><span><b>Tudo junto num documento.</b> Digite <span class="say">meu kit</span></span></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- PACTO -->
+  <div class="pact">
+    <div style="display:flex; justify-content:space-between; align-items:baseline;">
+      <h2 style="font-size:14pt;">Pacto de 7 dias</h2>
+      <span class="mono" style="font-size:6.4pt; color:#555;">30 min por dia · atrasou um? segue o próximo</span>
+    </div>
+    <div style="margin-top:1.6mm; border-top:.8pt solid #000;">
+      <div class="row"><span class="box"></span><span class="d">Dia 1</span><span>Reescreva sua frase de impacto (EX 01) e mostre pra 3 pessoas.</span><span class="m">__/__</span></div>
+      <div class="row"><span class="box"></span><span class="d">Dia 2</span><span>Grave seu pitch de 30s em vídeo. Assista. Corte o que sobra.</span><span class="m">__/__</span></div>
+      <div class="row"><span class="box"></span><span class="d">Dia 3</span><span>Faça a tabela de valor pra 1 financiador real (EX 03 no GPT).</span><span class="m">__/__</span></div>
+      <div class="row"><span class="box"></span><span class="d">Dia 4</span><span>Documente uma cena real, com autorização. Poste hoje.</span><span class="m">__/__</span></div>
+      <div class="row"><span class="box"></span><span class="d">Dia 5</span><span>Complete seu banco de provas: 3 números + 3 histórias + 3 falas.</span><span class="m">__/__</span></div>
+      <div class="row"><span class="box"></span><span class="d">Dia 6</span><span>Mande sua palavra pra 5 pessoas: "o que vem à cabeça?"</span><span class="m">__/__</span></div>
+      <div class="row"><span class="box"></span><span class="d">Dia 7</span><span>Agende 30 dias de calendário 3x semana (EX 05 no GPT).</span><span class="m">__/__</span></div>
+    </div>
+    <div class="sign">
+      <div class="field"><span class="lbl mono">Eu me comprometo · assinatura</span><span class="ln"></span></div>
+      <div class="field"><span class="lbl mono">Início</span><span class="ln"></span></div>
+    </div>
+  </div>
+
+  <!-- CONEXÕES -->
+  <div style="margin-top:5mm;">
+    <div style="display:flex; justify-content:space-between; align-items:baseline;">
+      <h2 style="font-size:14pt;">Conexões de hoje</h2>
+      <span class="mono" style="font-size:6.4pt; color:#555;">3 pessoas da sala · pergunte a palavra delas</span>
+    </div>
+    <div class="conn" style="margin-top:1.6mm; border-top:.8pt solid #000;">
+      <div class="crow head mono"><span>Nome</span><span>Iniciativa</span><span>A palavra dela</span><span>Contato</span></div>
+      <div class="crow"><span></span><span></span><span></span><span></span></div>
+      <div class="crow"><span></span><span></span><span></span><span></span></div>
+      <div class="crow"><span></span><span></span><span></span><span></span></div>
+    </div>
+  </div>
+
+  <!-- CARTÃO DESTACÁVEL (no pé da página: recortar não estraga o resto) -->
+  <div class="cut">
+    <span class="scissor">✂</span>
+    <span class="how mono">Recorte · dobre ao meio · guarde na carteira</span>
+    <div class="card2">
+      <div class="wallet">
+        <div class="mono" style="font-size:6.2pt; font-weight:600;">Minha palavra</div>
+        <div style="margin-top:2mm; border:.8pt solid #000; border-radius:1.4mm; height:13mm;"></div>
+        <div class="mono" style="font-size:6.2pt; font-weight:600; margin-top:3.4mm;">Minha frase</div>
+        <div class="wl"></div>
+        <div class="wl"></div>
+        <div class="wl"></div>
+      </div>
+      <div class="wallet" style="justify-content:space-between;">
+        <div>
+          <div class="mono" style="font-size:6.2pt; font-weight:600;">Toda comunicação importante tem</div>
+          <p style="margin-top:1.6mm; font-size:11.5pt; font-weight:800; letter-spacing:-.02em; line-height:1.1;">um número grande<br>e um nome próprio.</p>
+        </div>
+        <p style="font-size:12.5pt; font-weight:800; letter-spacing:-.025em; line-height:1.05;">Pare de explicar o que você faz.<br><span class="serif" style="font-size:15pt;">Comece a contar o que muda.</span></p>
+        <div class="mono" style="font-size:6.2pt; display:flex; justify-content:space-between;"><span>Daniel Luzz</span><span>@DanielLuzz</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="key">
+    <span class="mono" style="font-size:6.2pt; color:#555;">Rede Muda Mundo · Imersão Inovação Social</span>
+    <div class="ans"><b>Gabarito da frente</b> · 01 faz / muda · 02 dó / estratégia · 03 documente / expor · 04 palavra / estreito</div>
+  </div>
+</div>
+
+</body>
+</html>
